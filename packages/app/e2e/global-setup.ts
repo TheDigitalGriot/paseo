@@ -299,8 +299,8 @@ function ensureRelayBuildArtifact(repoRoot: string): void {
     return;
   }
 
-  console.log("[e2e] Building @getpaseo/relay for daemon startup");
-  execSync("npm run build --workspace=@getpaseo/relay", {
+  console.log("[e2e] Building @thedigitalgriot/relay for daemon startup");
+  execSync("npm run build --workspace=@thedigitalgriot/relay", {
     cwd: repoRoot,
     stdio: "inherit",
   });

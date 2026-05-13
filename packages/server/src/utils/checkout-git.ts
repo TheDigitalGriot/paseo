@@ -808,7 +808,7 @@ export interface GitWorktreeEntry {
   isBare?: boolean;
 }
 
-/** Check whether a path contains a `.paseo/worktrees/` segment (both `/` and `\`). */
+/** Check whether a path contains a `.thedigitalgriot/worktrees/` segment (both `/` and `\`). */
 export function isPaseoWorktreePath(p: string): boolean {
   return /[/\\]\.paseo[/\\]worktrees[/\\]/.test(p);
 }

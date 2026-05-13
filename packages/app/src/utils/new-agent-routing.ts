@@ -41,7 +41,7 @@ export function resolveSelectedAgentForNewAgent(input: {
 
 function inferMainRepoRootFromPaseoWorktreePath(cwd: string): string | null {
   const normalizedPath = cwd.replace(/\\/g, "/");
-  const marker = "/.paseo/worktrees";
+  const marker = "/.thedigitalgriot/worktrees";
   const markerIndex = normalizedPath.indexOf(marker);
   if (markerIndex <= 0) {
     return null;

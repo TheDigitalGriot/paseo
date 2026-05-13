@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
-import { spawnProcess } from "@getpaseo/server";
+import { spawnProcess } from "@thedigitalgriot/server";
 import { createRequire } from "node:module";
 import path from "node:path";
 import { app } from "electron";
@@ -14,8 +14,8 @@ import {
   type NodeEntrypointSpec,
 } from "./node-entrypoint-launcher.js";
 
-const CLI_PACKAGE_NAME = "@getpaseo/cli";
-const SERVER_PACKAGE_NAME = "@getpaseo/server";
+const CLI_PACKAGE_NAME = "@thedigitalgriot/cli";
+const SERVER_PACKAGE_NAME = "@thedigitalgriot/server";
 const CLI_BIN_ENTRY = `${CLI_PACKAGE_NAME}/bin/paseo`;
 
 interface PackageInfo {

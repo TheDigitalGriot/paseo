@@ -3,7 +3,7 @@ import {
   getStructuredAgentResponse,
   StructuredAgentResponseError,
   type AgentSnapshotPayload,
-} from "@getpaseo/server";
+} from "@thedigitalgriot/server";
 import { connectToDaemon, getDaemonHost } from "../../utils/client.js";
 import type {
   CommandOptions,

@@ -19,8 +19,8 @@ function resolveSecretFile(params) {
 
 const variants = {
   production: {
-    name: "Paseo",
-    packageId: "sh.paseo",
+    name: "Prism",
+    packageId: "com.thedigitalgriot.prism",
     googleServicesFile: resolveSecretFile({
       envKey: "GOOGLE_SERVICES_FILE_PROD",
       fallbackRelativePath: "./.secrets/google-services.prod.json",
@@ -31,8 +31,8 @@ const variants = {
     }),
   },
   development: {
-    name: "Paseo Debug",
-    packageId: "sh.paseo.debug",
+    name: "Prism Debug",
+    packageId: "com.thedigitalgriot.prism.debug",
     googleServicesFile: resolveSecretFile({
       envKey: "GOOGLE_SERVICES_FILE_DEBUG",
       fallbackRelativePath: "./.secrets/google-services.debug.json",
@@ -49,18 +49,18 @@ const variant = variants[appVariant] ?? variants.production;
 export default {
   expo: {
     name: variant.name,
-    slug: "voice-mobile",
+    slug: "prism-mobile",
     version: pkg.version,
     orientation: "portrait",
     icon: "./assets/images/icon.png",
-    scheme: "paseo",
+    scheme: "prism",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     runtimeVersion: {
       policy: "appVersion",
     },
     updates: {
-      url: "https://u.expo.dev/0e7f65ce-0367-46c8-a238-2b65963d235a",
+      url: "https://u.expo.dev/4e6ac688-b550-4441-b19a-bbb4459ad05b",
     },
     ios: {
       supportsTablet: true,
@@ -148,9 +148,9 @@ export default {
     extra: {
       router: {},
       eas: {
-        projectId: "0e7f65ce-0367-46c8-a238-2b65963d235a",
+        projectId: "4e6ac688-b550-4441-b19a-bbb4459ad05b",
       },
     },
-    owner: "getpaseo",
+    owner: "digitalgriot",
   },
 };

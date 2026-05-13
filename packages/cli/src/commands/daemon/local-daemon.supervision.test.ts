@@ -14,8 +14,8 @@ vi.mock("node:child_process", async () => {
   };
 });
 
-vi.mock("@getpaseo/server", async () => {
-  const actual = await vi.importActual<typeof import("@getpaseo/server")>("@getpaseo/server");
+vi.mock("@thedigitalgriot/server", async () => {
+  const actual = await vi.importActual<typeof import("@thedigitalgriot/server")>("@thedigitalgriot/server");
   return {
     ...actual,
     loadConfig: () => ({ listen: "127.0.0.1:6767" }),

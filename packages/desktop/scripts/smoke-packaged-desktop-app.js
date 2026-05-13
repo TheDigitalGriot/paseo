@@ -123,7 +123,7 @@ function readIfExists(filePath) {
 
 function formatLogs({ stdout, stderr, userData }) {
   const desktopLog = readIfExists(path.join(userData, "logs", "main.log"));
-  const daemonLog = readIfExists(path.join(os.homedir(), ".paseo", "daemon.log"));
+  const daemonLog = readIfExists(path.join(os.homedir(), ".thedigitalgriot", "daemon.log"));
   return [
     `App stdout:\n${stdout.join("").trim() || "<empty>"}`,
     `App stderr:\n${stderr.join("").trim() || "<empty>"}`,

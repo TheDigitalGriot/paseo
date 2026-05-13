@@ -7,7 +7,7 @@ import {
   type EncryptedChannel,
   type Transport as RelayTransport,
   type KeyPair,
-} from "@getpaseo/relay/e2ee";
+} from "@thedigitalgriot/relay/e2ee";
 import {
   buildRelayWebSocketUrl,
   shouldUseTlsForDefaultHostedRelay,
