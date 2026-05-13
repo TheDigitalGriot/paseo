@@ -3,9 +3,9 @@ account_id = "c431da740e42c0b57f901b8ba2115bbc"
 main = "src/cloudflare-adapter.ts"
 compatibility_date = "2024-12-01"
 
-# Mount the relay under /relay/* on prism.digitalgriot.studio.
-# The cloudflare-adapter.ts has been patched to strip the /relay prefix
-# before routing to /health and /ws handlers.
+# Single route binding: prism.digitalgriot.studio/relay/*
+# The cloudflare-adapter.ts strip-/relay patch maps /relay/ws -> /ws internally.
+# Multi-app strategy: synaptiq.digitalgriot.studio/relay/*, etc. add additional patterns here.
 routes = [
   { pattern = "prism.digitalgriot.studio/relay/*", zone_name = "digitalgriot.studio" }
 ]

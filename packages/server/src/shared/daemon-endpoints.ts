@@ -2,6 +2,8 @@ export interface HostPortParts {
   host: string;
   port: number;
   isIpv6: boolean;
+  /** Optional URL path (including leading slash). Used for path-mounted relays, e.g. "/relay". */
+  path?: string;
 }
 
 export interface ConnectionUriParts extends HostPortParts {
@@ -55,31 +57,34 @@ export function parseHostPort(input: string): HostPortParts {
     throw new Error("Host is required");
   }
 
-  // IPv6: [::1]:6767
+  // IPv6: [::1]:6767 (with optional path: [::1]:6767/relay)
   if (trimmed.startsWith("[")) {
-    const match = trimmed.match(/^\[([^\]]+)\]:(\d{1,5})$/);
+    const match = trimmed.match(/^\[([^\]]+)\]:(\d{1,5})(\/.*)?$/);
     if (!match) {
       throw new Error("Invalid host:port (expected [::1]:6767)");
     }
     const host = match[1].trim();
     if (!host) throw new Error("Host is required");
     const port = parsePort(match[2], "Invalid host:port");
-    return { host, port, isIpv6: true };
+    const path = match[3] ? match[3] : undefined;
+    return path ? { host, port, isIpv6: true, path } : { host, port, isIpv6: true };
   }
 
-  const match = trimmed.match(/^(.+):(\d{1,5})$/);
+  const match = trimmed.match(/^(.+):(\d{1,5})(\/.*)?$/);
   if (!match) {
     throw new Error("Invalid host:port (expected localhost:6767)");
   }
   const host = match[1].trim();
   if (!host) throw new Error("Host is required");
   const port = parsePort(match[2], "Invalid host:port");
-  return { host, port, isIpv6: false };
+  const path = match[3] ? match[3] : undefined;
+  return path ? { host, port, isIpv6: false, path } : { host, port, isIpv6: false };
 }
 
 export function normalizeHostPort(input: string): string {
-  const { host, port, isIpv6 } = parseHostPort(input);
-  return isIpv6 ? `[${host}]:${port}` : `${host}:${port}`;
+  const { host, port, isIpv6, path } = parseHostPort(input);
+  const pathPart = path ?? "";
+  return isIpv6 ? `[${host}]:${port}${pathPart}` : `${host}:${port}${pathPart}`;
 }
 
 export function parseConnectionUri(input: string): ParsedConnectionUri {
@@ -185,10 +190,11 @@ export function buildRelayWebSocketUrl(params: {
   connectionId?: string;
   version?: RelayProtocolVersion | 1 | 2;
 }): string {
-  const { host, port, isIpv6 } = parseHostPort(params.endpoint);
+  const { host, port, isIpv6, path } = parseHostPort(params.endpoint);
   const protocol = params.useTls ? "wss" : "ws";
   const hostPart = isIpv6 ? `[${host}]` : host;
-  const url = new URL(`${protocol}://${hostPart}:${port}/ws`);
+  const pathPrefix = path ?? "";
+  const url = new URL(`${protocol}://${hostPart}:${port}${pathPrefix}/ws`);
   url.searchParams.set("serverId", params.serverId);
   url.searchParams.set("role", params.role);
   url.searchParams.set("v", normalizeRelayProtocolVersion(params.version));
@@ -200,7 +206,11 @@ export function buildRelayWebSocketUrl(params: {
 
 export function shouldUseTlsForDefaultHostedRelay(endpoint: string): boolean {
   try {
-    return normalizeHostPort(endpoint) === DEFAULT_RELAY_ENDPOINT;
+    // Use TLS for any endpoint on port 443 (HTTPS convention).
+    // This makes Cloudflare-Worker-style custom relay deployments work transparently
+    // while still using plain ws:// for localhost/dev relays on other ports.
+    const { port } = parseHostPort(endpoint);
+    return port === 443;
   } catch {
     return false;
   }
