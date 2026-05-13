@@ -567,6 +567,12 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
 
+    // Support mounting under /relay/* route (e.g. prism.digitalgriot.studio/relay/*)
+    if (url.pathname === "/relay" || url.pathname.startsWith("/relay/")) {
+      url.pathname = url.pathname.slice("/relay".length) || "/";
+      request = new Request(url.toString(), request);
+    }
+
     // Health check
     if (url.pathname === "/health") {
       return new Response(JSON.stringify({ status: "ok" }), {
